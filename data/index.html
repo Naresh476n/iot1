@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ESP32 Power Tracker (Local)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>⚡ ESP32 Power Tracker</h1>
+    <div class="device">Device: <span id="deviceId">esp32-local</span> · IP: <span id="ip">...</span></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Remote Control</h2>
+      <div class="loads">
+        <div class="load">
+          <span class="icon light">💡</span>
+          <label class="switch"><input type="checkbox" id="relay1"><span class="slider"></span></label>
+          <div class="name">Light 1</div>
+        </div>
+        <div class="load">
+          <span class="icon light">💡</span>
+          <label class="switch"><input type="checkbox" id="relay2"><span class="slider"></span></label>
+          <div class="name">Light 2</div>
+        </div>
+        <div class="load">
+          <span class="icon light">💡</span>
+          <label class="switch"><input type="checkbox" id="relay3"><span class="slider"></span></label>
+          <div class="name">Light 3</div>
+        </div>
+        <div class="load">
+          <span class="icon fan">🌀</span>
+          <label class="switch"><input type="checkbox" id="relay4"><span class="slider"></span></label>
+          <div class="name">Fan</div>
+        </div>
+      </div>
+
+      <div class="timers">
+        <h3>Timer Auto-OFF</h3>
+        <div class="preset-row">
+          <button data-min="15" class="preset">15 min</button>
+          <button data-min="30" class="preset">30 min</button>
+          <button data-min="60" class="preset">60 min</button>
+          <input type="number" id="customMin" placeholder="Custom (min)" min="1">
+          <select id="loadSelect">
+            <option value="1">Light 1</option>
+            <option value="2">Light 2</option>
+            <option value="3">Light 3</option>
+            <option value="4">Fan</option>
+          </select>
+          <button id="applyTimer">Apply</button>
+        </div>
+      </div>
+
+      <div class="limits">
+        <h3>Usage Limit (hours / day)</h3>
+        <div class="limit-row">
+          <label>L1 <input type="number" id="limit1" min="0.5" step="0.5" value="12"></label>
+          <label>L2 <input type="number" id="limit2" min="0.5" step="0.5" value="12"></label>
+          <label>L3 <input type="number" id="limit3" min="0.5" step="0.5" value="12"></label>
+          <label>FAN <input type="number" id="limit4" min="0.5" step="0.5" value="12"></label>
+          <button id="saveLimits">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Live Monitoring</h2>
+      <div id="live" class="live-grid"></div>
+    </section>
+
+    <section class="card">
+      <h2>Charts & Reports</h2>
+      <div class="toolbar">
+        <label>From <input type="date" id="fromDate"></label>
+        <label>To <input type="date" id="toDate"></label>
+        <button id="loadCharts">Load</button>
+        <select id="chartType"><option value="bar">Bar</option><option value="line">Line</option></select>
+        <button id="downloadPdf">Download PDF</button>
+        <label>Price/kWh <input type="number" id="price" step="0.01" value="8"></label>
+        <button id="savePrice">Save</button>
+      </div>
+      <canvas id="chart" height="120"></canvas>
+      <div id="report"></div>
+    </section>
+
+    <section class="card">
+      <h2>Notifications</h2>
+      <div class="notif-controls">
+        <button id="refreshNotifs">Refresh</button>
+        <button id="clearNotifs">Clear</button>
+      </div>
+      <ul id="notifs"></ul>
+    </section>
+  </main>
+
+  <footer><small>© Local ESP32</small></footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
